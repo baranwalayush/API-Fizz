@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map with Navigation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+      #map {
+          height: 800px;
+          width: 20%;
+          margin: 20px auto;
+          border: 2px solid #007BFF;
+          border-radius: 10px;
+      }
+  </style>
+  </head>
+  <body>
+    <div class="container text-center">
+      <h1>JAWAHARLAL NEHRU UNIVERSITY MAP GUIDE</h1>
+      <div class="container" id="search">
+        <label for="searchinput">Search Location: </label>
+        <input type="text" id="searchinput">
+      </div>
+
+
+      <br>
+      <br>
+      <div class="container" id="imp locations">
+      <h2>NOTABLE LOCATIONS</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">S.No.</th>
+            <th scope="col">Name</th>
+            <th scope="col">About</th>
+            <th scope="col">Destination</th>
+            <th scope="col">View Map</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          {%for loc in locs%}
+          {%if loc.role!=2%}
+          <tr id="{{loc.name}}{%if loc.role==0%}IMPORTANT{%else%}TOURIST{%endif%}">
+            <th scope="row">{{loop.index}}</th>
+            <td>{{loc.name}}</td>
+            <td>{{loc.about}}</td>
+            <td>{%if loc.role==0%}IMPORTANT{%else%}TOURIST{%endif%}</td>
+            <td><button class="btn btn-success views" id="{{loc.lon}} {{loc.lat}}">Click here</button></td>
+          </tr>
+          {%endif%}
+          {%endfor%}
+        </tbody>
+        
+      
+      </table>
+      </div>
+      
+
+      <div class="container text-right" id="addLocation">
+        <form action="/add" method="POST">
+          <h1 class="pt-3 text-center">Add Favourite Location</h1>
+          <div class="inputs">
+          <label for="exampleInputEmail1" class="form-label">Name: </label>
+          <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+          </div>
+          <div class="inputs">
+          <label for="exampleInputPassword1" class="form-label">Full Address: </label>
+          <input type="text" name="address" class="form-control" id="exampleInputPassword1" required>
+          </div>
+          <div class="inputs">
+              <label for="name" class="form-label">About: </label>
+              <input type="text" name="about" class="form-control" required>
+          </div>
+          <div class="text-center"><button type="submit" class="btn btn-primary inputs px-4 text-center">Add</button></div>
+        </form>
+
+      </div>
+      <div id="people choice">
+        <h2>PEOPLES' CHOICE</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">S.No.</th>
+              <th scope="col">Name</th>
+              <th scope="col">About</th>
+              <th scope="col">View Map</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {%for loc in locs%}
+            {%if loc.role==2%}
+            <tr>
+              <th scope="row">{{loop.index-3}}</th>
+              <td>{{loc.name}}</td>
+              <td>{{loc.about}}</td>
+              <td><button class="btn btn-success views" id="{{loc.lon}} {{loc.lat}}">Click here</button></td>
+            </tr>
+            {%endif%}
+            {%endfor%}
+          </tbody>
+          
+        
+        </table>
+      </div>
+    </div>
+
+    <div id="map"></div>
+
+    
+    <script src="/static/index.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
